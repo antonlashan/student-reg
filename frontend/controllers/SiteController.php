@@ -4,15 +4,24 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\LoginForm;
+use common\models\Qualification;
+use common\models\User;
+use common\models\UserCategory;
+use common\models\UserDetail;
+use common\models\UserQualifications;
+use common\models\UserSpecializations;
+use common\models\Specialization;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -89,7 +98,10 @@ class SiteController extends Controller {
 
 		$model = new LoginForm();
 		if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			return $this->goBack();
+			if (UserDetail::find()->where(['user_id' => Yii::$app->user->id])->count()) {
+				return $this->goBack();
+			}
+			return $this->redirect('update-profile');
 		} else {
 			return $this->render('login', [
 					'model' => $model,
@@ -211,6 +223,81 @@ class SiteController extends Controller {
 		return $this->render('resetPassword', [
 				'model' => $model,
 		]);
+	}
+
+	public function actionUpdateProfile()
+	{
+		$user = $this->findUserModel(Yii::$app->user->id);
+
+		$userDetail = $user->userDetail;
+		if (!$userDetail)
+			$userDetail = new UserDetail();
+
+		$userDetail->qualifications = ArrayHelper::map(UserQualifications::findAll(['user_id' => $user->id]), 'qualification_id', 'qualification_id');
+		$userDetail->specializations = ArrayHelper::map(UserSpecializations::findAll(['user_id' => $user->id]), 'specialization_id', 'specialization_id');
+
+		if ($user->load(Yii::$app->request->post()) && $user->save()) {
+			if ($userDetail->load(Yii::$app->request->post())) {
+				$userDetail->user_id = $user->id;
+				if ($userDetail->save()) {
+					//delete insert qualifications
+					UserQualifications::deleteAll(['user_id' => $user->id]);
+
+					if (!empty($userDetail->qualifications)) {
+
+						foreach ($userDetail->qualifications as $qualificationId) {
+							$uQualifications = new UserQualifications();
+							$uQualifications->qualification_id = $qualificationId;
+							$uQualifications->user_id = $user->id;
+							$uQualifications->save();
+						}
+					}
+
+					//delete insert specializations
+					UserSpecializations::deleteAll(['user_id' => $user->id]);
+					if (!empty($userDetail->specializations)) {
+
+						foreach ($userDetail->specializations as $specializationId) {
+							$uSpecializations = new UserSpecializations();
+							$uSpecializations->specialization_id = $specializationId;
+							$uSpecializations->user_id = $user->id;
+							$uSpecializations->save();
+						}
+					}
+					return $this->redirect(['view-profile', 'id' => $user->id]);
+				}
+			}
+		}
+
+		$memberCategoryList = ArrayHelper::map(UserCategory::findAll(['status' => UserCategory::STATUS_ACTIVE]), 'id', 'name');
+		$qualificationList = ArrayHelper::map(Qualification::findAll(['status' => Qualification::STATUS_ACTIVE]), 'id', 'name');
+		$specializationList = ArrayHelper::map(Specialization::findAll(['status' => Specialization::STATUS_ACTIVE]), 'id', 'name');
+
+		return $this->render('update-profile', [
+				'user' => $user,
+				'userDetail' => $userDetail,
+				'memberCategoryList' => $memberCategoryList,
+				'qualificationList' => $qualificationList,
+				'specializationList' => $specializationList,
+		]);
+	}
+
+	public function actionViewProfile($id)
+	{
+		$user = $this->findUserModel($id);
+
+		return $this->render('view-profile', [
+				'user' => $user,
+		]);
+	}
+
+	protected function findUserModel($id)
+	{
+		if (($model = User::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 	}
 
 }

@@ -5,6 +5,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use common\models\User;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -20,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
 
-			<?= $form->field($model, 'title')->dropDownList(common\models\User::instantiate('')->getTitleLabels(), ['prompt' => '- select title -']) ?>
+			<?= $form->field($model, 'title')->dropDownList(User::instantiate(null)->getTitleLabels(), ['prompt' => '- select title -']) ?>
 			<?= $form->field($model, 'full_name') ?>
 			<?= $form->field($model, 'email') ?>
 

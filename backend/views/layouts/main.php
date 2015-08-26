@@ -35,15 +35,15 @@ AppAsset::register($this);
 			    'innerContainerOptions' => ['class' => 'container-fluid'],
 		    ]);
 		    $menuItems = [
-			    ['label' => 'Home', 'url' => ['/site/index']],
-			    ['label' => 'Members', 'url' => ['/user/index']],
-			    ['label' => 'Qualifications', 'url' => ['/qualification/index']],
-			    ['label' => 'Specializations', 'url' => ['/specialization/index']],
-			    ['label' => 'Member Categories', 'url' => ['/user-category/index']],
 		    ];
 		    if (Yii::$app->user->isGuest) {
 			    $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
 		    } else {
+			    $menuItems[] = ['label' => 'Home', 'url' => ['/site/index']];
+			    $menuItems[] = ['label' => 'Members', 'url' => ['/user/index']];
+			    $menuItems[] = ['label' => 'Qualifications', 'url' => ['/qualification/index']];
+			    $menuItems[] = ['label' => 'Specializations', 'url' => ['/specialization/index']];
+			    $menuItems[] = ['label' => 'Member Categories', 'url' => ['/user-category/index']];
 			    $menuItems[] = [
 				    'label' => 'Logout (' . Yii::$app->user->identity->full_name . ')',
 				    'url' => ['/site/logout'],

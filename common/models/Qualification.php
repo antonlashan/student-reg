@@ -13,44 +13,62 @@ use Yii;
  *
  * @property UserQualifications[] $userQualifications
  */
-class Qualification extends \yii\db\ActiveRecord
-{
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%qualification}}';
-    }
+class Qualification extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['status'], 'integer'],
-            [['name'], 'string', 'max' => 50]
-        ];
-    }
+	//status
+	const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'status' => 'Status',
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public static function tableName()
+	{
+		return '{{%qualification}}';
+	}
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserQualifications()
-    {
-        return $this->hasMany(UserQualifications::className(), ['qualification_id' => 'id']);
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function rules()
+	{
+		return [
+			[['status'], 'integer'],
+			[['name'], 'string', 'max' => 50]
+		];
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'id' => 'ID',
+			'name' => 'Name',
+			'status' => 'Status',
+		];
+	}
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getUserQualifications()
+	{
+		return $this->hasMany(UserQualifications::className(), ['qualification_id' => 'id']);
+	}
+
+	public function getStatusLabels()
+	{
+		return [
+			self::STATUS_ACTIVE => 'Active',
+			self::STATUS_INACTIVE => 'Inactive',
+		];
+	}
+
+	public function getStatusLabel()
+	{
+		return $this->getStatusLabels()[$this->status];
+	}
+
 }

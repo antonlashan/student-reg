@@ -13,44 +13,62 @@ use Yii;
  *
  * @property UserDetail[] $userDetails
  */
-class UserCategory extends \yii\db\ActiveRecord
-{
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%user_category}}';
-    }
+class UserCategory extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['status'], 'integer'],
-            [['name'], 'string', 'max' => 50]
-        ];
-    }
+	//status
+	const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'status' => 'Status',
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public static function tableName()
+	{
+		return '{{%user_category}}';
+	}
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserDetails()
-    {
-        return $this->hasMany(UserDetail::className(), ['member_category_id' => 'id']);
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function rules()
+	{
+		return [
+			[['status'], 'integer'],
+			[['name'], 'string', 'max' => 50]
+		];
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'id' => 'ID',
+			'name' => 'Name',
+			'status' => 'Status',
+		];
+	}
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getUserDetails()
+	{
+		return $this->hasMany(UserDetail::className(), ['member_category_id' => 'id']);
+	}
+
+	public function getStatusLabels()
+	{
+		return [
+			self::STATUS_ACTIVE => 'Active',
+			self::STATUS_INACTIVE => 'Inactive',
+		];
+	}
+
+	public function getStatusLabel()
+	{
+		return $this->getStatusLabels()[$this->status];
+	}
+
 }

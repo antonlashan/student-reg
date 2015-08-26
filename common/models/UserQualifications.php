@@ -13,51 +13,52 @@ use Yii;
  * @property User $user
  * @property Qualification $qualification
  */
-class UserQualifications extends \yii\db\ActiveRecord
-{
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%user_qualifications}}';
-    }
+class UserQualifications extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['user_id', 'qualification_id'], 'integer'],
-            [['user_id', 'qualification_id'], 'unique', 'targetAttribute' => ['user_id', 'qualification_id'], 'message' => 'The combination of User ID and Qualification ID has already been taken.']
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public static function tableName()
+	{
+		return '{{%user_qualifications}}';
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'user_id' => 'User ID',
-            'qualification_id' => 'Qualification ID',
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function rules()
+	{
+		return [
+			[['user_id', 'qualification_id'], 'integer'],
+			[['user_id', 'qualification_id'], 'unique', 'targetAttribute' => ['user_id', 'qualification_id'], 'message' => 'The combination of User ID and Qualification ID has already been taken.']
+		];
+	}
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'user_id' => 'User ID',
+			'qualification_id' => 'Qualification ID',
+		];
+	}
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getQualification()
-    {
-        return $this->hasOne(Qualification::className(), ['id' => 'qualification_id']);
-    }
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getUser()
+	{
+		return $this->hasOne(User::className(), ['id' => 'user_id']);
+	}
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getQualification()
+	{
+		return $this->hasOne(Qualification::className(), ['id' => 'qualification_id']);
+	}
+
 }
