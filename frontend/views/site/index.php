@@ -1,14 +1,30 @@
 <?php
+
+use yii\helpers\Html;
+use yii\widgets\ListView;
+
 /* @var $this yii\web\View */
+/* @var $searchModel frontend\models\UserSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'My Yii Application';
+$this->title = 'Home';
 ?>
-<div class="site-index">
+<div class="user-index">
 
-	<div class="jumbotron">
-		<h1>Congratulations!</h1>
+	<h1>Search existing members </h1>
+	<?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-	</div>
 
+	<?php if ($dataProvider) { ?>
+		<?=
+		ListView::widget([
+			'dataProvider' => $dataProvider,
+			'itemOptions' => ['class' => 'item'],
+			'itemView' => function ($model, $key, $index, $widget) {
+			return Html::a(Html::encode($model->full_name), ['view-member', 'id' => $model->id]);
+		},
+		])
+		?>
+	<?php } ?>
 
 </div>

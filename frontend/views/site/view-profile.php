@@ -12,11 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-category-view">
 
 
-
-	<p>
-	    <?= Html::a('Update', ['update-profile', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
-	</p>
-
+	<?php if ($canManage) { ?>
+		<p>
+		    <?= Html::a('Update', ['update-profile', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+		</p>
+	<?php } ?>
+		
 	<?=
 	DetailView::widget([
 		'model' => $user,
@@ -41,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				[
 					'attribute' => 'member_category_id',
 					'value' => $user->userDetail->memberCategory->name,
+					'visible' => $canManage
 				],
 				'present_position',
 				'affiliation',

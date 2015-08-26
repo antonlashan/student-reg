@@ -9,6 +9,7 @@ use common\models\User;
 use common\models\UserCategory;
 use common\models\UserDetail;
 use common\models\UserQualifications;
+use frontend\models\UserSearch;
 use common\models\UserSpecializations;
 use common\models\Specialization;
 use frontend\models\PasswordResetRequestForm;
@@ -82,7 +83,16 @@ class SiteController extends Controller {
 	 */
 	public function actionIndex()
 	{
-		return $this->render('index');
+		$searchModel = new UserSearch();
+		if (Yii::$app->request->queryParams)
+			$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		else
+			$dataProvider = null;
+
+		return $this->render('index', [
+				'searchModel' => $searchModel,
+				'dataProvider' => $dataProvider,
+		]);
 	}
 
 	/**
@@ -264,7 +274,7 @@ class SiteController extends Controller {
 							$uSpecializations->save();
 						}
 					}
-					return $this->redirect(['view-profile', 'id' => $user->id]);
+					return $this->redirect(['view-profile']);
 				}
 			}
 		}
@@ -282,12 +292,13 @@ class SiteController extends Controller {
 		]);
 	}
 
-	public function actionViewProfile($id)
+	public function actionViewProfile()
 	{
-		$user = $this->findUserModel($id);
+		$user = $this->findUserModel(Yii::$app->user->id);
 
 		return $this->render('view-profile', [
 				'user' => $user,
+				'canManage' => TRUE,
 		]);
 	}
 
@@ -298,6 +309,16 @@ class SiteController extends Controller {
 		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
+	}
+
+	public function actionViewMember($id)
+	{
+		$user = $this->findUserModel($id);
+
+		return $this->render('view-profile', [
+				'user' => $user,
+				'canManage' => FALSE,
+		]);
 	}
 
 }
