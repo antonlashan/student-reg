@@ -18,6 +18,7 @@ class UserSearch extends User {
 	public function rules()
 	{
 		return [
+			[['email'], 'required'],
 			[['id', 'title', 'is_admin', 'status'], 'integer'],
 			[['auth_key', 'password_hash', 'password_reset_token', 'email', 'full_name', 'created_at', 'updated_at'], 'safe'],
 		];
@@ -48,6 +49,9 @@ class UserSearch extends User {
 		]);
 
 		$this->load($params);
+		if (empty($this->attributes['email'])) {
+			return null;
+		}
 
 		if (!$this->validate()) {
 			// uncomment the following line if you do not want to return any records when validation fails
