@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?php if ($canManage) { ?>
 		<p>
-		    <?= Html::a('Update', ['update-profile', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+		    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Edit', ['update-profile', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
 		</p>
 	<?php } ?>
 		

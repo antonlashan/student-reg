@@ -17,11 +17,11 @@ use yii\widgets\ActiveForm;
 	]);
 	?>
 
-	<?= $form->field($model, 'email') ?>
+	<?= $form->field($model, 'search_e_n')->label(false) ?>
 
 
 	<div class="form-group">
-		<?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+		<?= Html::submitButton('Search', ['class' => 'btn btn-default']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>

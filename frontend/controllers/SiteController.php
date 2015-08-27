@@ -29,6 +29,8 @@ use yii\web\NotFoundHttpException;
  */
 class SiteController extends Controller {
 
+	public $defaultAction = 'login';
+
 	/**
 	 * @inheritdoc
 	 */

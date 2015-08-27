@@ -35,6 +35,9 @@ class User extends ActiveRecord implements IdentityInterface {
 	//title
 	const TITLE_MR = 1;
 	const TITLE_MRS = 2;
+	const TITLE_MS = 3;
+	const TITLE_DR = 4;
+	const TITLE_PROF = 5;
 	//is admin
 	const IS_ADMIN_YES = 1;
 	const IS_ADMIN_NO = 0;
@@ -211,6 +214,9 @@ class User extends ActiveRecord implements IdentityInterface {
 		return [
 			self::TITLE_MR => 'Mr',
 			self::TITLE_MRS => 'Mrs',
+			self::TITLE_MS => 'Ms',
+			self::TITLE_DR => 'Dr',
+			self::TITLE_PROF => 'Prof',
 		];
 	}
 
