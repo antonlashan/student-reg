@@ -113,7 +113,7 @@ class SiteController extends Controller {
 			if (UserDetail::find()->where(['user_id' => Yii::$app->user->id])->count()) {
 				return $this->goBack();
 			}
-			return $this->redirect('update-profile');
+			return $this->redirect(['site/update-profile']);
 		} else {
 			return $this->render('login', [
 					'model' => $model,
