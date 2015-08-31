@@ -43,6 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value' => $model->getIsAdminLabel(),
 			],
 			[
+				'attribute' => 'is_public',
+				'value' => $model->getIsPublicLabel(),
+			],
+			[
 				'attribute' => 'status',
 				'value' => $model->getStatusLabel(),
 			],

@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
 	<?= $form->field($model, 'status')->dropDownList($model->getStatusLabels()) ?>
 
 	<div class="form-group">
+		<?= Html::a('Cancel', ['index'], ['class' => 'btn btn-primary']) ?>
 		<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	</div>
 

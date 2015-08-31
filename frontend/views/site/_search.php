@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
 
 	<div class="form-group">
-		<?= Html::submitButton('Search', ['class' => 'btn btn-default']) ?>
+		<?= Html::submitButton('Search', ['class' => 'btn btn-success']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>

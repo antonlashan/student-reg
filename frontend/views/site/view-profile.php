@@ -28,6 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			'full_name',
 			'email:email',
+			[
+				'attribute' => 'is_public',
+				'value' => $user->getIsPublicLabel(),
+			],
 		],
 	])
 	?>

@@ -37,6 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			],
 			[
+				'attribute' => 'is_public',
+				'value' => function($data) {
+					return $data->getIsPublicLabel();
+				}
+			],
+			[
 				'attribute' => 'status',
 				'value' => function($data) {
 					return $data->getStatusLabel();

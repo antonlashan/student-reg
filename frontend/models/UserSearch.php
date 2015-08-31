@@ -12,10 +12,12 @@ use common\models\User;
  */
 class UserSearch extends User {
 
-	public $search_e_n;//search by email an name
+	public $search_e_n; //search by email an name
+
 	/**
 	 * @inheritdoc
 	 */
+
 	public function rules()
 	{
 		return [
@@ -33,7 +35,7 @@ class UserSearch extends User {
 		// bypass scenarios() implementation in the parent class
 		return Model::scenarios();
 	}
-	
+
 	public function attributeLabels()
 	{
 		return [
@@ -67,8 +69,8 @@ class UserSearch extends User {
 			return $dataProvider;
 		}
 
-		$query->andFilterWhere(['like', 'email', $this->search_e_n])
-			->orFilterWhere(['like', 'full_name', $this->search_e_n]);
+		$query->where(['status' => User::STATUS_ACTIVE, 'is_public' => User::IS_PUBLIC_YES]);
+		$query->andWhere("`email` LIKE '%$this->search_e_n%' OR `full_name` LIKE '%$this->search_e_n%'");
 
 		return $dataProvider;
 	}

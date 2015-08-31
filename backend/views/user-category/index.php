@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\UserCategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'User Categories';
+$this->title = 'Member Categories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-category-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 	<p>
-	    <?= Html::a('Create User Category', ['create'], ['class' => 'btn btn-success']) ?>
+	    <?= Html::a('Create Member Category', ['create'], ['class' => 'btn btn-success']) ?>
 	</p>
 
 	<?=

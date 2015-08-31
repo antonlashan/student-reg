@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $user common\models\User */
@@ -20,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?= $form->field($user, 'title')->dropDownList($user->getTitleLabels(), ['prompt' => '- select title -']) ?>
 	<?= $form->field($user, 'full_name') ?>
+	<?= $form->field($user, 'is_public')->checkbox(['value' => User::IS_PUBLIC_YES, 'uncheck' => User::IS_PUBLIC_NO], false) ?>
 	<?= $form->field($userDetail, 'membership_number') ?>
 	<?= $form->field($userDetail, 'member_category_id')->dropDownList($memberCategoryList, ['prompt' => '- Select category -']) ?>
 	<?= $form->field($userDetail, 'present_position') ?>
