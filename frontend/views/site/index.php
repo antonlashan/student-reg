@@ -13,7 +13,7 @@ $this->title = 'Home';
 	<div class="jumbotron">
 		<h1>IPSL Member Portal</h1>
 		<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-		<p><?= Html::a('Sign up today', ['signup'], ['class' => 'btn btn-lg btn-success']) ?></p>
+		<p><?= Html::a('Sign up today', ['signup'], ['class' => 'btn btn-lg btn-primary']) ?></p>
 	</div>
 
 	<div class="body-content">
