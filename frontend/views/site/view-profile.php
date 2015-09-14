@@ -16,7 +16,8 @@ $userId = \Yii::$app->user->id;
 
 	<?php if ($canManage) { ?>
 		<p>
-		    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Edit', ['update-profile', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+		    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Edit', ['update-profile'], ['class' => 'btn btn-primary']) ?>
+		    <?= Html::a('<span class="glyphicon glyphicon-asterisk"></span> Change Password', ['change-password'], ['class' => 'btn btn-primary']) ?>
 		</p>
 	<?php } ?>
 

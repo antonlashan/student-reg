@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use common\models\ChangePasswordForm;
 use common\models\LoginForm;
 use common\models\Qualification;
 use common\models\User;
@@ -247,6 +248,15 @@ class SiteController extends Controller {
 		$userDetail->qualifications = ArrayHelper::map(UserQualifications::findAll(['user_id' => $user->id]), 'qualification_id', 'qualification_id');
 		$userDetail->specializations = ArrayHelper::map(UserSpecializations::findAll(['user_id' => $user->id]), 'specialization_id', 'specialization_id');
 
+		if ($userDetail->isNewRecord) {
+			$userDetail->visibility_email = UserDetail::VISIBILITY_EMAIL_YES;
+			$userDetail->visibility_official_address = UserDetail::VISIBILITY_OFFICIAL_ADDRESS_YES;
+			$userDetail->visibility_permanent_address = UserDetail::VISIBILITY_PERMANENT_ADDRESS_YES;
+			$userDetail->visibility_phone_office = UserDetail::VISIBILITY_PHONE_OFFICE_YES;
+			$userDetail->visibility_phone_residence = UserDetail::VISIBILITY_PHONE_RESIDENCE_YES;
+			$userDetail->visibility_phone_mobile = UserDetail::VISIBILITY_PHONE_MOBILE_YES;
+		}
+
 		if ($user->load(Yii::$app->request->post()) && $user->save()) {
 			if ($userDetail->load(Yii::$app->request->post())) {
 				$userDetail->user_id = $user->id;
@@ -319,6 +329,21 @@ class SiteController extends Controller {
 		return $this->render('view-profile', [
 				'user' => $user,
 				'canManage' => FALSE,
+		]);
+	}
+	
+	public function actionChangePassword()
+	{
+		$model = new ChangePasswordForm(Yii::$app->user->id);
+
+		if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
+			Yii::$app->session->setFlash('success', 'New password was saved.');
+
+			return $this->goHome();
+		}
+
+		return $this->render('change_password', [
+				'model' => $model,
 		]);
 	}
 

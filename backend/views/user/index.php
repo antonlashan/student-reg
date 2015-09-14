@@ -46,13 +46,20 @@ $this->params['breadcrumbs'][] = $this->title;
 			// 'updated_at',
 			[
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view} {update} {delete} {activate}',
+				'template' => '{view} {update} {delete} {activate} {change-pwd}',
 				'buttons' => [
 					//activate button
 					'activate' => function ($url, $model, $key) {
 						return Html::a('<span class="glyphicon glyphicon-ok"></span>', yii\helpers\Url::to(['update-status', 'id' => $model->id]), [
 								'title' => Yii::t('app', 'Activate/Deactivate'),
 //								'class' => 'btn btn-primary btn-xs',
+						]);
+					},
+					//change-pwd button
+					'change-pwd' => function ($url, $model, $key) {
+						return Html::a('<span class="glyphicon glyphicon-wrench"></span>', yii\helpers\Url::to(['change-password', 'id' => $model->id]), [
+								'title' => Yii::t('app', 'Change Password'),
+	//								'class' => 'btn btn-primary btn-xs',
 						]);
 					},
 				],

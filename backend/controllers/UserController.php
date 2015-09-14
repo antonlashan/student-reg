@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\UserSearch;
+use common\models\ChangePasswordForm;
 use common\models\Qualification;
 use common\models\UserQualifications;
 use common\models\User;
@@ -78,7 +79,7 @@ class UserController extends Controller {
 	public function actionUpdate($id)
 	{
 		$user = $this->findModel($id);
-		
+
 		$userDetail = $user->userDetail;
 		if (!$userDetail)
 			$userDetail = new UserDetail();
@@ -86,11 +87,20 @@ class UserController extends Controller {
 		$userDetail->qualifications = ArrayHelper::map(UserQualifications::findAll(['user_id' => $user->id]), 'qualification_id', 'qualification_id');
 		$userDetail->specializations = ArrayHelper::map(UserSpecializations::findAll(['user_id' => $user->id]), 'specialization_id', 'specialization_id');
 
+		if ($userDetail->isNewRecord) {
+			$userDetail->visibility_email = UserDetail::VISIBILITY_EMAIL_YES;
+			$userDetail->visibility_official_address = UserDetail::VISIBILITY_OFFICIAL_ADDRESS_YES;
+			$userDetail->visibility_permanent_address = UserDetail::VISIBILITY_PERMANENT_ADDRESS_YES;
+			$userDetail->visibility_phone_office = UserDetail::VISIBILITY_PHONE_OFFICE_YES;
+			$userDetail->visibility_phone_residence = UserDetail::VISIBILITY_PHONE_RESIDENCE_YES;
+			$userDetail->visibility_phone_mobile = UserDetail::VISIBILITY_PHONE_MOBILE_YES;
+		}
+
 		if ($user->load(Yii::$app->request->post()) && $user->save()) {
 			if ($userDetail->load(Yii::$app->request->post())) {
 				$userDetail->user_id = $user->id;
 				if ($userDetail->save()) {
-					
+
 					//delete insert qualifications
 					UserQualifications::deleteAll(['user_id' => $user->id]);
 					if (!empty($userDetail->qualifications)) {
@@ -131,7 +141,7 @@ class UserController extends Controller {
 				'specializationList' => $specializationList,
 		]);
 	}
-	
+
 	public function actionUpdateStatus($id)
 	{
 		$model = $this->findModel($id);
@@ -179,6 +189,21 @@ class UserController extends Controller {
 		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
+	}
+
+	public function actionChangePassword($id)
+	{
+		$model = new ChangePasswordForm($id);
+
+		if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
+			Yii::$app->session->setFlash('success', 'New password was saved.');
+
+			return $this->redirect(['index']);
+		}
+
+		return $this->render('change_password', [
+				'model' => $model,
+		]);
 	}
 
 }

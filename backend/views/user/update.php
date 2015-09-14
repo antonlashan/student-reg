@@ -23,6 +23,14 @@ $this->params['breadcrumbs'][] = 'Update';
 		<?php $form = ActiveForm::begin(); ?>
 
 		<div class="row">
+			<div class="col-md-3">
+			    <?= $form->field($user, 'is_admin')->dropDownList($user->getIsAdminLabels()) ?>
+			</div>
+			<div class="col-md-9">
+
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-md-6">
 			    <?= $form->field($user, 'title')->dropDownList($user->getTitleLabels(), ['prompt' => '- select title -']) ?>
 			</div>
