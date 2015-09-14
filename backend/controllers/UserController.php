@@ -3,11 +3,18 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\User;
 use backend\models\UserSearch;
+use common\models\Qualification;
+use common\models\UserQualifications;
+use common\models\User;
+use common\models\UserCategory;
+use common\models\UserDetail;
+use common\models\UserSpecializations;
+use common\models\Specialization;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -63,30 +70,69 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Creates a new User model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 * @return mixed
-	 */
-	public function actionCreate()
-	{
-		$model = new User();
-
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->id]);
-		} else {
-			return $this->render('create', [
-					'model' => $model,
-			]);
-		}
-	}
-
-	/**
 	 * Updates an existing User model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id
 	 * @return mixed
 	 */
 	public function actionUpdate($id)
+	{
+		$user = $this->findModel($id);
+		
+		$userDetail = $user->userDetail;
+		if (!$userDetail)
+			$userDetail = new UserDetail();
+
+		$userDetail->qualifications = ArrayHelper::map(UserQualifications::findAll(['user_id' => $user->id]), 'qualification_id', 'qualification_id');
+		$userDetail->specializations = ArrayHelper::map(UserSpecializations::findAll(['user_id' => $user->id]), 'specialization_id', 'specialization_id');
+
+		if ($user->load(Yii::$app->request->post()) && $user->save()) {
+			if ($userDetail->load(Yii::$app->request->post())) {
+				$userDetail->user_id = $user->id;
+				if ($userDetail->save()) {
+					
+					//delete insert qualifications
+					UserQualifications::deleteAll(['user_id' => $user->id]);
+					if (!empty($userDetail->qualifications)) {
+
+						foreach ($userDetail->qualifications as $qualificationId) {
+							$uQualifications = new UserQualifications();
+							$uQualifications->qualification_id = $qualificationId;
+							$uQualifications->user_id = $user->id;
+							$uQualifications->save();
+						}
+					}
+
+					//delete insert specializations
+					UserSpecializations::deleteAll(['user_id' => $user->id]);
+					if (!empty($userDetail->specializations)) {
+
+						foreach ($userDetail->specializations as $specializationId) {
+							$uSpecializations = new UserSpecializations();
+							$uSpecializations->specialization_id = $specializationId;
+							$uSpecializations->user_id = $user->id;
+							$uSpecializations->save();
+						}
+					}
+					return $this->redirect(['view', 'id' => $user->id]);
+				}
+			}
+		}
+
+		$memberCategoryList = ArrayHelper::map(UserCategory::findAll(['status' => UserCategory::STATUS_ACTIVE]), 'id', 'name');
+		$qualificationList = ArrayHelper::map(Qualification::findAll(['status' => Qualification::STATUS_ACTIVE]), 'id', 'name');
+		$specializationList = ArrayHelper::map(Specialization::findAll(['status' => Specialization::STATUS_ACTIVE]), 'id', 'name');
+
+		return $this->render('update', [
+				'user' => $user,
+				'userDetail' => $userDetail,
+				'memberCategoryList' => $memberCategoryList,
+				'qualificationList' => $qualificationList,
+				'specializationList' => $specializationList,
+		]);
+	}
+	
+	public function actionUpdateStatus($id)
 	{
 		$model = $this->findModel($id);
 
@@ -100,7 +146,7 @@ class UserController extends Controller {
 
 			return $this->redirect(['view', 'id' => $model->id]);
 		} else {
-			return $this->render('update', [
+			return $this->render('update_status', [
 					'model' => $model,
 			]);
 		}

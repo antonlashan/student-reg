@@ -2,12 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\UserDetail;
 
 /* @var $this yii\web\View */
 /* @var $user common\models\User */
 
 $this->title = 'Profile - ' . $user->full_name;
 $this->params['breadcrumbs'][] = $this->title;
+$userId = \Yii::$app->user->id;
 ?>
 <div class="user-category-view">
 
@@ -17,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Edit', ['update-profile', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
 		</p>
 	<?php } ?>
-		
+
 	<?=
 	DetailView::widget([
 		'model' => $user,
@@ -27,10 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value' => $user->getTitleLabel(),
 			],
 			'full_name',
-			'email:email',
 			[
-				'attribute' => 'is_public',
-				'value' => $user->getIsPublicLabel(),
+				'attribute' => 'email',
+				'value' => $user->email,
+				'format' => 'email',
+				'visible' => (($user->id == $userId) || $user->id != $userId && $user->userDetail->visibility_email == UserDetail::VISIBILITY_EMAIL_YES)
 			],
 		],
 	])
@@ -50,11 +53,31 @@ $this->params['breadcrumbs'][] = $this->title;
 				],
 				'present_position',
 				'affiliation',
-				'phone_office',
-				'phone_residence',
-				'phone_mobile',
-				'official_address',
-				'permanent_address',
+				[
+					'attribute' => 'phone_office',
+					'value' => $user->userDetail->phone_office,
+					'visible' => (($user->id == $userId) || $user->userDetail->visibility_phone_office == UserDetail::VISIBILITY_PHONE_OFFICE_YES)
+				],
+				[
+					'attribute' => 'phone_residence',
+					'value' => $user->userDetail->phone_residence,
+					'visible' => (($user->id == $userId) || $user->userDetail->visibility_phone_residence == UserDetail::VISIBILITY_PHONE_RESIDENCE_YES)
+				],
+				[
+					'attribute' => 'phone_mobile',
+					'value' => $user->userDetail->phone_mobile,
+					'visible' => (($user->id == $userId) || $user->userDetail->visibility_phone_mobile == UserDetail::VISIBILITY_PHONE_MOBILE_YES)
+				],
+				[
+					'attribute' => 'official_address',
+					'value' => $user->userDetail->official_address,
+					'visible' => (($user->id == $userId) || $user->userDetail->visibility_official_address == UserDetail::VISIBILITY_OFFICIAL_ADDRESS_YES)
+				],
+				[
+					'attribute' => 'permanent_address',
+					'value' => $user->userDetail->permanent_address,
+					'visible' => (($user->id == $userId) || $user->userDetail->visibility_permanent_address == UserDetail::VISIBILITY_PERMANENT_ADDRESS_YES)
+				],
 				'professional_qualifications',
 				[
 					'attribute' => 'qualifications',
@@ -67,6 +90,41 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 		])
 		?>
+
+		<?php if ($user->id == $userId) { ?>
+			<p>Visibility</p>
+			<?=
+			DetailView::widget([
+				'model' => $user->userDetail,
+				'attributes' => [
+					[
+						'attribute' => 'visibility_email',
+						'value' => $user->userDetail->getVisibilityEmailLabel(),
+					],
+					[
+						'attribute' => 'visibility_official_address',
+						'value' => $user->userDetail->getVisibilityOfficialAddressLabel(),
+					],
+					[
+						'attribute' => 'visibility_permanent_address',
+						'value' => $user->userDetail->getVisibilityPermanentAddressLabel(),
+					],
+					[
+						'attribute' => 'visibility_phone_office',
+						'value' => $user->userDetail->getVisibilityPhoneOfficeLabel(),
+					],
+					[
+						'attribute' => 'visibility_phone_residence',
+						'value' => $user->userDetail->getVisibilityPhoneResidenceLabel(),
+					],
+					[
+						'attribute' => 'visibility_phone_mobile',
+						'value' => $user->userDetail->getVisibilityPhoneMobileLabel(),
+					],
+				],
+			])
+			?>
+		<?php } ?>
 	<?php } ?>
 
 </div>

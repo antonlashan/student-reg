@@ -90,3 +90,12 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 #container{margin-top: 70px;}
+
+.navbar-inverse {
+    background-color: #1a4a71;
+    border-color: #1a4a71;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: #143551;
+    color: #fff;
+}

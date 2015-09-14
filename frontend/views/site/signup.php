@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<?= $form->field($model, 'email') ?>
 
 			<?= $form->field($model, 'password')->passwordInput() ?>
-			<?= $form->field($model, 'is_public')->checkbox(['value' => User::IS_PUBLIC_YES, 'uncheck' => User::IS_PUBLIC_NO], false) ?>
+			<?php // $form->field($model, 'is_public')->checkbox(['value' => User::IS_PUBLIC_YES, 'uncheck' => User::IS_PUBLIC_NO], false) ?>
 
 			<div class="form-group">
 				<?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

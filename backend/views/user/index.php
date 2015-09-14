@@ -37,12 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			],
 			[
-				'attribute' => 'is_public',
-				'value' => function($data) {
-					return $data->getIsPublicLabel();
-				}
-			],
-			[
 				'attribute' => 'status',
 				'value' => function($data) {
 					return $data->getStatusLabel();
@@ -50,7 +44,19 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			// 'created_at',
 			// 'updated_at',
-			['class' => 'yii\grid\ActionColumn'],
+			[
+				'class' => 'yii\grid\ActionColumn',
+				'template' => '{view} {update} {delete} {activate}',
+				'buttons' => [
+					//activate button
+					'activate' => function ($url, $model, $key) {
+						return Html::a('<span class="glyphicon glyphicon-ok"></span>', yii\helpers\Url::to(['update-status', 'id' => $model->id]), [
+								'title' => Yii::t('app', 'Activate/Deactivate'),
+//								'class' => 'btn btn-primary btn-xs',
+						]);
+					},
+				],
+			],
 		],
 	]);
 	?>

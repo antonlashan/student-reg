@@ -1,13 +1,17 @@
 <?php
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+use yii\helpers\Html;
+
+$this->title = 'Home';
 ?>
 <div class="site-index">
 
 	<div class="jumbotron">
-		<h1>Congratulations!</h1>
-
+		<h2>IPSL is the apex body of Physicists in Sri Lanka</h2>
+		<?= Html::img('@web/img/logo.png') ?>
+		<h1>IPSL Membership Portal</h1>
+		<p class="lead">Admin Login</p>
 	</div>
 
 

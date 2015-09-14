@@ -15,7 +15,6 @@ class SignupForm extends Model {
 	public $password;
 	public $full_name;
 	public $title;
-	public $is_public;
 
 	/**
 	 * @inheritdoc
@@ -27,7 +26,6 @@ class SignupForm extends Model {
 			[['email', 'full_name', 'title'], 'required'],
 			['email', 'email'],
 			['email', 'string', 'max' => 255],
-			['is_public', 'integer'],
 			['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 			['password', 'required'],
 			['password', 'string', 'min' => 6],
@@ -37,7 +35,6 @@ class SignupForm extends Model {
 	public function attributeLabels()
 	{
 		return [
-			'is_public' => 'Display to non-members',
 		];
 	}
 
@@ -56,7 +53,6 @@ class SignupForm extends Model {
 			$user->status = User::STATUS_INACTIVE;
 			$user->is_admin = User::IS_ADMIN_NO;
 			$user->setPassword($this->password);
-			$user->is_public = $this->is_public;
 			$user->generateAuthKey();
 			if ($user->save()) {
 				\Yii::$app->mailer->compose(['html' => 'signupRequest-html', 'text' => 'signupRequest-text'], ['user' => $user])

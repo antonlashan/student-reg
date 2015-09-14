@@ -315,9 +315,6 @@ class SiteController extends Controller {
 	public function actionViewMember($id)
 	{
 		$user = $this->findUserModel($id);
-		if ($user->is_public == User::IS_PUBLIC_NO) {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
 
 		return $this->render('view-profile', [
 				'user' => $user,

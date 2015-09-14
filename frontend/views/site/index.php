@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
@@ -11,23 +12,21 @@ $this->title = 'Home';
 ?>
 <div class="user-index">
 	<div class="jumbotron">
-		<h1>IPSL Member Portal</h1>
-		<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+		<h1>IPSL is the apex body of Physicists in Sri Lanka</h1>
+		<?= Html::img('@web/img/logo.png') ?>
+		<h2>Welcome to IPSL Membership Portal</h2>
+		<p class="lead">This Membership Portal contains services for members of the Institute of Physics, Sri Lanka. Membership is open to anyone with an interest in Physics, for more information please go to Membership.</p>
+		<p></p><br/>
+		<p>To enter the Membership Portal please sign in using registered email and password: </p>
+		<p><?= Html::a('Membership Login', ['login'], ['class' => 'btn btn-lg btn-primary']) ?></p>
+		<p>If you are a new member sign up today.</p>
 		<p><?= Html::a('Sign up today', ['signup'], ['class' => 'btn btn-lg btn-primary']) ?></p>
 	</div>
 
 	<div class="body-content">
 
 		<div class="row">
-			<div class="col-lg-5">
-				<h2>Using Member Portal</h2>
-
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-					fugiat nulla pariatur.</p>
-
-			</div>
+			
 			<div class="col-lg-7">
 				<h2>Search IPSL Members</h2>
 

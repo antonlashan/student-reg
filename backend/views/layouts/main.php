@@ -70,7 +70,7 @@ AppAsset::register($this);
 
 		<footer class="footer">
 			<div class="container-fluid">
-				<p class="pull-left">&copy; <?= Yii::$app->name ?> <?= date('Y') ?></p>
+				<p class="pull-left">&copy; Institute of Physics Sri Lanka <?= date('Y') ?> - Developed by <a href="http://www.litsolutions.biz">Lit Solutions</a> - 0094 777711355</p>
 
 			</div>
 		</footer>

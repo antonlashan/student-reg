@@ -69,7 +69,7 @@ class UserSearch extends User {
 			return $dataProvider;
 		}
 
-		$query->where(['status' => User::STATUS_ACTIVE, 'is_public' => User::IS_PUBLIC_YES]);
+		$query->where(['status' => User::STATUS_ACTIVE]);
 		$query->andWhere("`email` LIKE '%$this->search_e_n%' OR `full_name` LIKE '%$this->search_e_n%'");
 
 		return $dataProvider;

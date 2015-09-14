@@ -19,7 +19,6 @@ use yii\web\IdentityInterface;
  * @property integer $title
  * @property string $full_name
  * @property integer $is_admin
- * @property integer $is_public
  * @property integer $status
  * @property string $created_at
  * @property string $updated_at
@@ -42,9 +41,6 @@ class User extends ActiveRecord implements IdentityInterface {
 	//is admin
 	const IS_ADMIN_YES = 1;
 	const IS_ADMIN_NO = 0;
-	//is public
-	const IS_PUBLIC_YES = 1;
-	const IS_PUBLIC_NO = 0;
 
 	/**
 	 * @inheritdoc
@@ -79,14 +75,13 @@ class User extends ActiveRecord implements IdentityInterface {
 		return [
 			[['title', 'full_name'], 'required'],
 			['status', 'in', 'range' => [self::STATUS_INACTIVE, self::STATUS_ACTIVE]],
-			[['is_public'], 'integer'],
 		];
 	}
 
 	public function attributeLabels()
 	{
 		return [
-			'is_public' => 'Display to non-members',
+			
 		];
 	}
 
@@ -248,19 +243,6 @@ class User extends ActiveRecord implements IdentityInterface {
 	public function getIsAdminLabel()
 	{
 		return $this->getIsAdminLabels()[$this->is_admin];
-	}
-
-	public function getIsPublicLabels()
-	{
-		return [
-			self::IS_PUBLIC_YES => 'Yes',
-			self::IS_PUBLIC_NO => 'No',
-		];
-	}
-
-	public function getIsPublicLabel()
-	{
-		return $this->getIsPublicLabels()[$this->is_public];
 	}
 
 	public function getStatusLabels()
