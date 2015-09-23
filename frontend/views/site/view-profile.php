@@ -34,7 +34,7 @@ $userId = \Yii::$app->user->id;
 				'attribute' => 'email',
 				'value' => $user->email,
 				'format' => 'email',
-				'visible' => (($user->id == $userId) || $user->id != $userId && $user->userDetail->visibility_email == UserDetail::VISIBILITY_EMAIL_YES)
+				'visible' => (($user->id == $userId) || $user->id != $userId && $user->userDetail && $user->userDetail->visibility_email == UserDetail::VISIBILITY_EMAIL_YES)
 			],
 		],
 	])
