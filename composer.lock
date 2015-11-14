@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b37960ce975ef1e9d42c1d8cbf5234a0",
+    "hash": "07283d09b5a0c5ab347637fafab5205b",
+    "content-hash": "27a4d88c547b0953f99678c4163f4362",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -645,21 +646,21 @@
         },
         {
             "name": "yiisoft/yii2-bootstrap",
-            "version": "2.0.4",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-                "reference": "1b6b1e61cf91c3cdd517d6a7e71d30bb212e4af0"
+                "reference": "1464f93834b1d5edb1f5625f7ffd6c3723fa4923"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/1b6b1e61cf91c3cdd517d6a7e71d30bb212e4af0",
-                "reference": "1b6b1e61cf91c3cdd517d6a7e71d30bb212e4af0",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/1464f93834b1d5edb1f5625f7ffd6c3723fa4923",
+                "reference": "1464f93834b1d5edb1f5625f7ffd6c3723fa4923",
                 "shasum": ""
             },
             "require": {
                 "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
-                "yiisoft/yii2": ">=2.0.4"
+                "yiisoft/yii2": ">=2.0.6"
             },
             "type": "yii2-extension",
             "extra": {
@@ -691,7 +692,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2015-05-10 22:08:17"
+            "time": "2015-09-23 17:48:24"
         },
         {
             "name": "yiisoft/yii2-composer",

@@ -8,8 +8,12 @@ use yii\helpers\Html;
 $loginLink = Yii::$app->urlManagerFrontend->createAbsoluteUrl(['site/login']);
 ?>
 <div class="password-reset">
-	<p>Hi <?= Html::encode($user->full_name) ?>,</p>
-	<p>your profile has been activated. </p>
+    <p>Dear <?= $user->getTitleLabel() ?> <?= Html::encode($user->full_name) ?>,</p>
+    <p>Your profile has been activated. </p>
 
-	<p>Please follow the <?= Html::a('link', $loginLink) ?> to login</p>
+    <p>Please follow the <?= Html::a('link', $loginLink) ?> to login to the <?= Yii::$app->name ?></p>
+
+    <p>Regards</p>
+    <p>Admin</p>
+    <p><?= Yii::$app->name ?></p>
 </div>
