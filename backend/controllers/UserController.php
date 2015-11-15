@@ -22,188 +22,200 @@ use yii\web\NotFoundHttpException;
  */
 class UserController extends Controller {
 
-	public function behaviors()
-	{
-		return [
-			'access' => [
-				'class' => \yii\filters\AccessControl::className(),
-				'rules' => [
-					[
-						'allow' => true,
-						'roles' => ['@'],
-					],
-				],
-			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['post'],
-				],
-			],
-		];
-	}
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
 
-	/**
-	 * Lists all User models.
-	 * @return mixed
-	 */
-	public function actionIndex()
-	{
-		$searchModel = new UserSearch();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    /**
+     * Lists all User models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-		return $this->render('index', [
-				'searchModel' => $searchModel,
-				'dataProvider' => $dataProvider,
-		]);
-	}
+        return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
 
-	/**
-	 * Displays a single User model.
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function actionView($id)
-	{
-		return $this->render('view', [
-				'model' => $this->findModel($id),
-		]);
-	}
+    /**
+     * Displays a single User model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+                    'model' => $this->findModel($id),
+        ]);
+    }
 
-	/**
-	 * Updates an existing User model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function actionUpdate($id)
-	{
-		$user = $this->findModel($id);
+    /**
+     * Updates an existing User model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $user = $this->findModel($id);
 
-		$userDetail = $user->userDetail;
-		if (!$userDetail)
-			$userDetail = new UserDetail();
+        $userDetail = $user->userDetail;
+        if (!$userDetail)
+            $userDetail = new UserDetail();
 
-		$userDetail->qualifications = ArrayHelper::map(UserQualifications::findAll(['user_id' => $user->id]), 'qualification_id', 'qualification_id');
-		$userDetail->specializations = ArrayHelper::map(UserSpecializations::findAll(['user_id' => $user->id]), 'specialization_id', 'specialization_id');
+        $userDetail->qualifications = ArrayHelper::map(UserQualifications::findAll(['user_id' => $user->id]), 'qualification_id', 'qualification_id');
+        $userDetail->specializations = ArrayHelper::map(UserSpecializations::findAll(['user_id' => $user->id]), 'specialization_id', 'specialization_id');
 
-		if ($userDetail->isNewRecord) {
-			$userDetail->visibility_email = UserDetail::VISIBILITY_EMAIL_YES;
-			$userDetail->visibility_official_address = UserDetail::VISIBILITY_OFFICIAL_ADDRESS_YES;
-			$userDetail->visibility_permanent_address = UserDetail::VISIBILITY_PERMANENT_ADDRESS_YES;
-			$userDetail->visibility_phone_office = UserDetail::VISIBILITY_PHONE_OFFICE_YES;
-			$userDetail->visibility_phone_residence = UserDetail::VISIBILITY_PHONE_RESIDENCE_YES;
-			$userDetail->visibility_phone_mobile = UserDetail::VISIBILITY_PHONE_MOBILE_YES;
-		}
+        if ($userDetail->isNewRecord) {
+            $userDetail->visibility_email = UserDetail::VISIBILITY_EMAIL_YES;
+            $userDetail->visibility_official_address = UserDetail::VISIBILITY_OFFICIAL_ADDRESS_YES;
+            $userDetail->visibility_permanent_address = UserDetail::VISIBILITY_PERMANENT_ADDRESS_YES;
+            $userDetail->visibility_phone_office = UserDetail::VISIBILITY_PHONE_OFFICE_YES;
+            $userDetail->visibility_phone_residence = UserDetail::VISIBILITY_PHONE_RESIDENCE_YES;
+            $userDetail->visibility_phone_mobile = UserDetail::VISIBILITY_PHONE_MOBILE_YES;
+        }
 
-		if ($user->load(Yii::$app->request->post()) && $user->save()) {
-			if ($userDetail->load(Yii::$app->request->post())) {
-				$userDetail->user_id = $user->id;
-				if ($userDetail->save()) {
+        if ($user->load(Yii::$app->request->post()) && $user->save()) {
+            if ($userDetail->load(Yii::$app->request->post())) {
+                $userDetail->user_id = $user->id;
+                if ($userDetail->save()) {
 
-					//delete insert qualifications
-					UserQualifications::deleteAll(['user_id' => $user->id]);
-					if (!empty($userDetail->qualifications)) {
+                    //delete insert qualifications
+                    UserQualifications::deleteAll(['user_id' => $user->id]);
+                    if (!empty($userDetail->qualifications)) {
 
-						foreach ($userDetail->qualifications as $qualificationId) {
-							$uQualifications = new UserQualifications();
-							$uQualifications->qualification_id = $qualificationId;
-							$uQualifications->user_id = $user->id;
-							$uQualifications->save();
-						}
-					}
+                        foreach ($userDetail->qualifications as $qualificationId) {
+                            $uQualifications = new UserQualifications();
+                            $uQualifications->qualification_id = $qualificationId;
+                            $uQualifications->user_id = $user->id;
+                            $uQualifications->save();
+                        }
+                    }
 
-					//delete insert specializations
-					UserSpecializations::deleteAll(['user_id' => $user->id]);
-					if (!empty($userDetail->specializations)) {
+                    //delete insert specializations
+                    UserSpecializations::deleteAll(['user_id' => $user->id]);
+                    if (!empty($userDetail->specializations)) {
 
-						foreach ($userDetail->specializations as $specializationId) {
-							$uSpecializations = new UserSpecializations();
-							$uSpecializations->specialization_id = $specializationId;
-							$uSpecializations->user_id = $user->id;
-							$uSpecializations->save();
-						}
-					}
-					return $this->redirect(['view', 'id' => $user->id]);
-				}
-			}
-		}
+                        foreach ($userDetail->specializations as $specializationId) {
+                            $uSpecializations = new UserSpecializations();
+                            $uSpecializations->specialization_id = $specializationId;
+                            $uSpecializations->user_id = $user->id;
+                            $uSpecializations->save();
+                        }
+                    }
+                    return $this->redirect(['view', 'id' => $user->id]);
+                }
+            }
+        }
 
-		$memberCategoryList = ArrayHelper::map(UserCategory::findAll(['status' => UserCategory::STATUS_ACTIVE]), 'id', 'name');
-		$qualificationList = ArrayHelper::map(Qualification::findAll(['status' => Qualification::STATUS_ACTIVE]), 'id', 'name');
-		$specializationList = ArrayHelper::map(Specialization::findAll(['status' => Specialization::STATUS_ACTIVE]), 'id', 'name');
+        $qualificationList = ArrayHelper::map(Qualification::findAll(['status' => Qualification::STATUS_ACTIVE]), 'id', 'name');
+        $specializationList = ArrayHelper::map(Specialization::findAll(['status' => Specialization::STATUS_ACTIVE]), 'id', 'name');
 
-		return $this->render('update', [
-				'user' => $user,
-				'userDetail' => $userDetail,
-				'memberCategoryList' => $memberCategoryList,
-				'qualificationList' => $qualificationList,
-				'specializationList' => $specializationList,
-		]);
-	}
+        return $this->render('update', [
+                    'user' => $user,
+                    'userDetail' => $userDetail,
+                    'qualificationList' => $qualificationList,
+                    'specializationList' => $specializationList,
+        ]);
+    }
 
-	public function actionUpdateStatus($id)
-	{
-		$model = $this->findModel($id);
+    public function actionUpdateStatus($id)
+    {
+        $model = $this->findModel($id);
+        $userDetail = $model->userDetail;
+        if (!$userDetail) {
+            $userDetail = new UserDetail();
+        }
+        $userDetail->scenario = UserDetail::SCENARIO_ACTIVATE;
 
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			if ($model->status == User::STATUS_ACTIVE)
-				\Yii::$app->mailer->compose(['html' => 'activateMember-html', 'text' => 'activateMember-text'], ['user' => $model])
-					->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
-					->setTo($model->email)
-					->setSubject('Profile activated')
-					->send();
+        $oldAttr = $model->oldAttributes;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-			return $this->redirect(['view', 'id' => $model->id]);
-		} else {
-			return $this->render('update_status', [
-					'model' => $model,
-			]);
-		}
-	}
+            if ($model->status == User::STATUS_ACTIVE && $oldAttr['status'] == User::STATUS_INACTIVE) {
+                \Yii::$app->mailer->compose(['html' => 'activateMember-html', 'text' => 'activateMember-text'], ['user' => $model])
+                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+                        ->setTo($model->email)
+                        ->setSubject('Profile activated')
+                        ->send();
+            }
 
-	/**
-	 * Deletes an existing User model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function actionDelete($id)
-	{
-		$this->findModel($id)->delete();
+            $userDetail->load(Yii::$app->request->post());
+            $userDetail->user_id = $model->id;
+            $userDetail->save(true, ['user_id', 'membership_number', 'member_category_id']);
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            $memberCategoryList = ArrayHelper::map(UserCategory::findAll(['status' => UserCategory::STATUS_ACTIVE]), 'id', 'name');
+            return $this->render('update_status', [
+                        'model' => $model,
+                        'userDetail' => $userDetail,
+                        'memberCategoryList' => $memberCategoryList,
+            ]);
+        }
+    }
 
-		return $this->redirect(['index']);
-	}
+    /**
+     * Deletes an existing User model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
 
-	/**
-	 * Finds the User model based on its primary key value.
-	 * If the model is not found, a 404 HTTP exception will be thrown.
-	 * @param integer $id
-	 * @return User the loaded model
-	 * @throws NotFoundHttpException if the model cannot be found
-	 */
-	protected function findModel($id)
-	{
-		if (($model = User::findOne($id)) !== null) {
-			return $model;
-		} else {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
-	}
+        return $this->redirect(['index']);
+    }
 
-	public function actionChangePassword($id)
-	{
-		$model = new ChangePasswordForm($id);
+    /**
+     * Finds the User model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = User::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
-		if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
-			Yii::$app->session->setFlash('success', 'New password was saved.');
+    public function actionChangePassword($id)
+    {
+        $model = new ChangePasswordForm($id);
 
-			return $this->redirect(['index']);
-		}
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
+            Yii::$app->session->setFlash('success', 'New password was saved.');
 
-		return $this->render('change_password', [
-				'model' => $model,
-		]);
-	}
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('change_password', [
+                    'model' => $model,
+        ]);
+    }
 
 }

@@ -51,15 +51,7 @@ $this->params['breadcrumbs'][] = 'Update';
 				<label>&nbsp;</label>
 				<?= $form->field($userDetail, 'visibility_email', ['template' => "{input}\n{label}\n{hint}\n{error}"])->checkbox(['value' => UserDetail::VISIBILITY_EMAIL_YES, 'uncheck' => UserDetail::VISIBILITY_EMAIL_NO], false) ?>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">
-			    <?= $form->field($userDetail, 'membership_number') ?>
-			</div>
-			<div class="col-md-6">
-			    <?= $form->field($userDetail, 'member_category_id')->dropDownList($memberCategoryList, ['prompt' => '- Select category -']) ?>
-			</div>
-		</div>
+		</div>		
 		<div class="row">
 			<div class="col-md-6">
 			    <?= $form->field($userDetail, 'present_position') ?>
