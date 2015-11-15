@@ -103,5 +103,13 @@ a.desc:after {
     color: #fff;
 }
 .jumbotron h1, .jumbotron .h1 {
-    font-size: 40px;
+    font-size: 30px;
+}
+.site-index .jumbotron {
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: 25px;
+}
+.site-index .jumbotron p, .site-index .lead {
+    font-size: 16px;
 }
