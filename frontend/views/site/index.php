@@ -20,17 +20,7 @@ $this->title = 'Home';
     </div>
 
     <div class="body-content">
-        <div class="row">
-            <div class="col-md-8">
-                <p class="lead text-center">To enter the Membership Portal please sign in using registered email and password: </p>
-                <p class="text-center"><?= Html::a('Membership Login', ['login'], ['class' => 'btn btn-lg btn-primary']) ?></p>
-            </div>
-            <div class="col-md-4">
-                <p class="lead text-center">If you are a new member sign up today.</p>
-                <p class="text-center"><?= Html::a('Sign up today', ['signup'], ['class' => 'btn btn-lg btn-primary']) ?></p>
-            </div>
-        </div>
-        <p></p>
+        
         <div class="row">
 
             <div class="col-md-9">
@@ -49,6 +39,11 @@ $this->title = 'Home';
                     ])
                     ?>
                 <?php } ?>
+            </div>
+            <div class="col-md-3">
+                <span class="lead">&nbsp;</span>
+                <p class="text-right"><?= Html::a('Member Login', ['login'], ['class' => 'btn btn-lg btn-primary']) ?></p>
+                <p class="text-right"><?= Html::a('Sign up today', ['signup'], ['class' => 'btn btn-lg btn-primary']) ?></p>
             </div>
         </div>
 
